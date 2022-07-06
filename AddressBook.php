@@ -1,6 +1,6 @@
 <?php
     /*
-    Ability to create a contact in AddressBook with first name, last name, address, state, city, zip, phone number and email
+    *Ability to create a contact in AddressBook with first name, last name, address, state, city, zip, phone number and email
     */
     include "ConnectionToDB.php";
     class AddressBook{ 
@@ -20,9 +20,48 @@
                 echo "Table NOT created";
             }
         }
+
+        //Function to insert data into table
+        public function insertValuesIntoTable(){
+            $obj = new Connection();  
+            $conn = $obj->ConnectToDB();
+            $firstName = readline("Enter first name :");
+            $lastName = readline("Enter last name :");
+            $address = readline("Enter address :");
+            $city = readline("Enter city :");
+            $state = readline("Enter state :");
+            $zipcode = readline("Enter zipcode :"); 
+            $mobilenumber = readline("Enter mobile number :");
+            $email = readline("Enter email :");  
+            $sql = "INSERT INTO contact_info(firstname , lastname , address , city , state , zipcode ,
+                    mobilenumber , email) VALUES ($firstName, $lastName, $address, $city, $state, $zipcode, $mobilenumber, $email)";
+            $result = mysqli_query($conn, $sql);
+
+            if($result){
+                echo "Data inserted successfully";
+            }
+            else{
+                echo "Data not inserted";
+            }
+        }
     }
 
     //Object
     $addressBook = new AddressBook();
-    $addressBook->createTable();
+    $change = true;
+    do{
+        echo "Enter choice : 1.To Create Table\n 2.Insert values into table\n3.Exit\n";
+        $choice = readline("");
+        switch($choice){
+            case 1:
+                $addressBook->createTable();
+                break;
+
+            case 2:
+                $addressBook->insertValuesIntoTable();
+
+            default:
+                $change = false;
+        }
+    }while($change) 
 ?>
